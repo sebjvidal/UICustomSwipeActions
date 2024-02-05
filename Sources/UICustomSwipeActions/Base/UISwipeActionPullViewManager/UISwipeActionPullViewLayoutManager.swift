@@ -23,8 +23,8 @@ struct UISwipeActionPullViewLayoutManager {
         return buttonWidth(for: actions)
     }
     
-    private var contentInsets: UIEdgeInsets {
-        return contentInsets(for: cellEdge)
+    private var buttonSpacing: CGFloat {
+        return buttonSpacing(for: actions)
     }
     
     // MARK: - Internal Properties
@@ -56,13 +56,8 @@ struct UISwipeActionPullViewLayoutManager {
         return actions.first?.configuration?.preferredButtonWidth ?? 74
     }
     
-    private func contentInsets(for cellEdge: CellEdge) -> UIEdgeInsets {
-        switch cellEdge {
-        case .leading:
-            return UIEdgeInsets(top: 0, left: 16, bottom: 50, right: 0)
-        case .trailing:
-            return UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 16)
-        }
+    private func buttonSpacing(for actions: [UICustomContextualAction]) -> CGFloat {
+        return actions.first?.configuration?.preferredButtonSpacing ?? 0
     }
     
     // MARK: - Internal Methods
@@ -73,11 +68,10 @@ struct UISwipeActionPullViewLayoutManager {
     func prepareSwipeActionPullView() {
         guard case .circular = style else { return }
         swipeActionPullView.backgroundColor = .clear
-        swipeActionPullView.setValue(contentInsets, forKey: "_contentInsets")
     }
     
     func resetSwipeActionStandardButton(_ swipeActionStandardButton: UIView) {
-        swipeActionStandardButton.setValue(buttonWidth, forKey: "buttonWidth")
+        swipeActionStandardButton.setValue(buttonWidth + buttonSpacing, forKey: "buttonWidth")
         
         guard case .circular = style else { return }
         
@@ -100,8 +94,8 @@ struct UISwipeActionPullViewLayoutManager {
             customSwipeActionButton.backgroundColor = actions[index!].backgroundColor
             
             let y = (swipeActionStandardButton.frame.height / 2) - (customSwipeActionButton.frame.height / 2)
+            customSwipeActionButton.frame.origin.x = cellEdge == .leading ? buttonSpacing : 0
             customSwipeActionButton.frame.origin.y = y
-//            customSwipeActionButton.frame.origin.x = cellEdge == .leading ? 0 : 0
         } else {
             let customSwipeActionButton = UICustomSwipeActionButton()
             customSwipeActionButton.frame.size.width = buttonWidth
