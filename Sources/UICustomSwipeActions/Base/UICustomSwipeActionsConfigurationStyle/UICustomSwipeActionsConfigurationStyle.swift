@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UICustomSwipeActionsConfigurationStyle.swift
 //  
 //
 //  Created by Seb Vidal on 18/11/2023.
