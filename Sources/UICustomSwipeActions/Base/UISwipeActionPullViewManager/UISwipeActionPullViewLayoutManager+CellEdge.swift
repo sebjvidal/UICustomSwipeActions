@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UISwipeActionPullViewLayoutManager+CellEdge.swift
 //  
 //
 //  Created by Seb Vidal on 19/11/2023.
