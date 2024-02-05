@@ -13,6 +13,8 @@ public class UICustomSwipeActionsConfiguration: UISwipeActionsConfiguration {
     
     public var preferredButtonWidth: CGFloat = 74
     
+    public var preferredButtonSpacing: CGFloat = 0
+    
     // MARK: - init(actions:)
     public convenience init(actions: [UIContextualAction]) {
         self.init()
