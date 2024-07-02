@@ -11,7 +11,7 @@ struct UISwipeActionPullViewLayoutManager {
     // MARK: - Private Properties
     private var swipeActionPullView: UIView
     
-    private var cellEdge: CellEdge {
+    private var cellEdge: UISwipeActionPullViewCellEdge {
         return cellEdge(for: swipeActionPullView)
     }
     
@@ -39,13 +39,17 @@ struct UISwipeActionPullViewLayoutManager {
     
     // MARK: - Private Methods
     private func actions(in swipeActionPullView: UIView) -> [UICustomContextualAction] {
-        let actions = swipeActionPullView.value(forKey: "_actions")
-        return actions as? [UICustomContextualAction] ?? []
+        let value = swipeActionPullView.value(forBase64Key: "X2FjdGlvbnM=")
+        let actions = value as? [UICustomContextualAction] ?? []
+        
+        return actions
     }
     
-    private func cellEdge(for swipeActionPullView: UIView) -> CellEdge {
-        let rawValue = swipeActionPullView.value(forKey: "_cellEdge") as? Int ?? 2
-        return CellEdge(rawValue: rawValue) ?? .leading
+    private func cellEdge(for swipeActionPullView: UIView) -> UISwipeActionPullViewCellEdge {
+        let rawValue = swipeActionPullView.value(forBase64Key: "X2NlbGxFZGdl") as? Int ?? 2
+        let cellEdge = UISwipeActionPullViewCellEdge(rawValue: rawValue) ?? .leading
+        
+        return cellEdge
     }
     
     private func style(for actions: [UICustomContextualAction]) -> UICustomSwipeActionsConfigurationStyle {
@@ -71,7 +75,7 @@ struct UISwipeActionPullViewLayoutManager {
     }
     
     func resetSwipeActionStandardButton(_ swipeActionStandardButton: UIView) {
-        swipeActionStandardButton.setValue(buttonWidth + buttonSpacing, forKey: "buttonWidth")
+        swipeActionStandardButton.setValue(buttonWidth + buttonSpacing, forBase64Key: "YnV0dG9uV2lkdGg=")
         
         guard case .circular = style else { return }
         

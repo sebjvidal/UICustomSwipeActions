@@ -9,13 +9,13 @@ import UIKit
 
 extension UIView {
     static func swizzleUISwipeActionStandardButtonLayoutSubviews() {
-        let UISwipeActionStandardButton = NSClassFromString("UISwipeActionStandardButton") as! UIView.Type
+        guard let UISwipeActionStandardButton = NSClassFromBase64String("VUlTd2lwZUFjdGlvblN0YW5kYXJkQnV0dG9u") as? UIView.Type else { return }
         
         let originalSelector = #selector(UISwipeActionStandardButton.layoutSubviews)
         let swizzledSelector = #selector(UIView.swizzledLayoutSubviews)
         
-        let originalMethod = class_getInstanceMethod(UISwipeActionStandardButton.self, originalSelector)!
-        let swizzledMethod = class_getInstanceMethod(UIView.self, swizzledSelector)!
+        guard let originalMethod = class_getInstanceMethod(UISwipeActionStandardButton.self, originalSelector) else { return }
+        guard let swizzledMethod = class_getInstanceMethod(UIView.self, swizzledSelector) else { return }
         
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }
@@ -34,8 +34,8 @@ extension UIView {
 
 //extension UIView {
 //    static func swizzleUISwipeActionStandardButtonTouchesBegan() {
-//        let UISwipeActionStandardButton = NSClassFromString("UISwipeActionStandardButton") as! UIView.Type
-//        
+//        guard let UISwipeActionStandardButton = NSClassFromBase64String("VUlTd2lwZUFjdGlvblN0YW5kYXJkQnV0dG9u") as? UIView.Type else { return }
+//
 //        let originalSelector = #selector(UISwipeActionStandardButton.touchesBegan(_:with:))
 //        let swizzledSelector = #selector(UIView.swizzledTouchesBegan(_:with:))
 //        
