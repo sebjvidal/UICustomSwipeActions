@@ -6,14 +6,22 @@ public class UICustomSwipeActionsConfiguration: UISwipeActionsConfiguration {
     
     // MARK: - Public Properties
     public override var actions: [UIContextualAction] {
-        return _actions
+        return _actions.map { action in
+            UICustomContextualAction(contextualAction: action, configuration: self)
+        }
     }
     
-    public var style: UICustomSwipeActionsConfigurationStyle = .default
+    public var preferredButtonStyle: UICustomSwipeActionsConfigurationButtonStyle = .default {
+        didSet { didSetPreferredButtonStyle(preferredButtonStyle) }
+    }
     
-    public var preferredButtonWidth: CGFloat = 74
+    public var preferredButtonWidth: CGFloat = 74 {
+        didSet { didSetPreferredButtonWidth(preferredButtonWidth) }
+    }
     
-    public var preferredButtonSpacing: CGFloat = 0
+    public var preferredButtonSpacing: CGFloat = 0 {
+        didSet { didSetPreferredButtonSpacing(preferredButtonSpacing) }
+    }
     
     // MARK: - init(actions:)
     public convenience init(actions: [UIContextualAction]) {
@@ -25,6 +33,25 @@ public class UICustomSwipeActionsConfiguration: UISwipeActionsConfiguration {
             }
         } else {
             NSException.customSwipeActionsConfigurationException.raise()
+        }
+    }
+    
+    // MARK: - Private Methods
+    private func didSetPreferredButtonStyle(_ newValue: UICustomSwipeActionsConfigurationButtonStyle) {
+        _actions.forEach { action in
+            action.preferredButtonStyle = newValue
+        }
+    }
+    
+    private func didSetPreferredButtonWidth(_ newValue: CGFloat) {
+        _actions.forEach { action in
+            action.preferredButtonWidth = newValue
+        }
+    }
+    
+    private func didSetPreferredButtonSpacing(_ newValue: CGFloat) {
+        _actions.forEach { action in
+            action.preferredButtonSpacing = newValue
         }
     }
 }
