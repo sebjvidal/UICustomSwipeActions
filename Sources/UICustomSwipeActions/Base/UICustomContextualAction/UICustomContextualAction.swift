@@ -12,7 +12,11 @@ class UICustomContextualAction: UIContextualAction {
     private var contextualAction: UIContextualAction
     
     // MARK: - Internal Properties
-    weak var configuration: UICustomSwipeActionsConfiguration?
+    var preferredButtonStyle: UICustomSwipeActionsConfigurationButtonStyle
+    
+    var preferredButtonWidth: CGFloat
+    
+    var preferredButtonSpacing: CGFloat
     
     // MARK: - Public Properties
     public override var style: UIContextualAction.Style {
@@ -50,6 +54,8 @@ class UICustomContextualAction: UIContextualAction {
     // MARK: - init(contextualAction:)
     init(contextualAction: UIContextualAction, configuration: UICustomSwipeActionsConfiguration) {
         self.contextualAction = contextualAction
-        self.configuration = configuration
+        self.preferredButtonStyle = configuration.preferredButtonStyle
+        self.preferredButtonWidth = configuration.preferredButtonWidth
+        self.preferredButtonSpacing = configuration.preferredButtonSpacing
     }
 }
