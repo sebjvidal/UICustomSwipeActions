@@ -8,49 +8,61 @@
 import UIKit
 
 extension UIView {
-    static func swizzleUISwipeActionStandardButtonLayoutSubviews() {
-        guard let UISwipeActionStandardButton = NSClassFromBase64String("VUlTd2lwZUFjdGlvblN0YW5kYXJkQnV0dG9u") as? UIView.Type else { return }
+    static func swizzleUISwipeActionPullViewLayoutSubviews() {
+        guard let UISwipeActionPullView = NSClassFromBase64String("VUlTd2lwZUFjdGlvblB1bGxWaWV3") as? UIView.Type else { return }
         
-        let originalSelector = #selector(UISwipeActionStandardButton.layoutSubviews)
-        let swizzledSelector = #selector(UIView.swizzledLayoutSubviews)
+        let originalSelector = #selector(UISwipeActionPullView.layoutSubviews)
+        let swizzledSelector = #selector(UISwipeActionPullView.swizzledUISwipeActionPullViewLayoutSubviews)
         
-        guard let originalMethod = class_getInstanceMethod(UISwipeActionStandardButton.self, originalSelector) else { return }
-        guard let swizzledMethod = class_getInstanceMethod(UIView.self, swizzledSelector) else { return }
+        guard let originalMethod = class_getInstanceMethod(UISwipeActionPullView.self, originalSelector) else { return }
+        guard let swizzledMethod = class_getInstanceMethod(UISwipeActionPullView.self, swizzledSelector) else { return }
         
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }
     
-    @objc dynamic func swizzledLayoutSubviews() {
-        swizzledLayoutSubviews()
+    @objc dynamic private func swizzledUISwipeActionPullViewLayoutSubviews() {
+        swizzledUISwipeActionPullViewLayoutSubviews()
         
-        guard let pullView = superview else { return }
+        let cellEdge = UIRectEdge(rawValue: value(forBase64Key: "X2NlbGxFZGdl") as? UInt ?? 2)
+        let actions = value(forBase64Key: "X2FjdGlvbnM=") as? [UICustomContextualAction]
         
-        let layoutManager = UISwipeActionPullViewLayoutManager(swipeActionPullView: pullView)
-        layoutManager.prepareSwipeActionPullView()
-        layoutManager.resetSwipeActionStandardButton(self)
-        layoutManager.layoutSwipeActionStandardButton(self)
+        guard let actions, actions.first?.preferredButtonStyle == .circular else { return }
+        
+        for case let (index, button as UIButton) in subviews.enumerated() {
+            guard actions.indices.contains(index) else { continue }
+            
+            let action = actions[index]
+            
+            for subview in button.subviews where !(subview is UICustomSwipeActionButton) {
+                subview.removeFromSuperview()
+            }
+            
+            let buttonWidth = action.preferredButtonWidth + action.preferredButtonSpacing
+            button.setValue(buttonWidth, forBase64Key: "YnV0dG9uV2lkdGg=")
+            
+            let frameForButton: (UIButton) -> CGRect = { [unowned self] button in
+                let width = action.preferredButtonWidth
+                let height = action.preferredButtonWidth
+                
+                let offset = frame.width == superview?.frame.width ? action.preferredButtonSpacing : 0
+                let x = (cellEdge == .left ? action.preferredButtonSpacing : 0) + (cellEdge == .left ? -offset : offset)
+                let y = (frame.height / 2) - (buttonWidth / 2)
+                
+                return CGRect(x: x, y: y, width: width, height: height)
+            }
+            
+            if let customSwipeActionButton = button.subviews.first as? UICustomSwipeActionButton {
+                UIView.animate(withDuration: 0.5) {
+                    customSwipeActionButton.frame = frameForButton(button)
+                }
+            } else {
+                let customSwipeActionButton = UICustomSwipeActionButton()
+                customSwipeActionButton.image = action.image
+                customSwipeActionButton.backgroundColor = action.backgroundColor
+                customSwipeActionButton.frame = frameForButton(button)
+                
+                button.addSubview(customSwipeActionButton)
+            }
+        }
     }
 }
-
-//extension UIView {
-//    static func swizzleUISwipeActionStandardButtonTouchesBegan() {
-//        guard let UISwipeActionStandardButton = NSClassFromBase64String("VUlTd2lwZUFjdGlvblN0YW5kYXJkQnV0dG9u") as? UIView.Type else { return }
-//
-//        let originalSelector = #selector(UISwipeActionStandardButton.touchesBegan(_:with:))
-//        let swizzledSelector = #selector(UIView.swizzledTouchesBegan(_:with:))
-//        
-//        let originalMethod = class_getInstanceMethod(UISwipeActionStandardButton.self, originalSelector)!
-//        let swizzledMethod = class_getInstanceMethod(UIView.self, swizzledSelector)!
-//        
-//        method_exchangeImplementations(originalMethod, swizzledMethod)
-//    }
-//    
-//    @objc dynamic func swizzledTouchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        swizzledTouchesBegan(touches, with: event)
-//        
-//        let circleView = subviews.first { $0 is CJSwipeActionButton }
-//        circleView?.alpha = 0.5
-//        
-//        UIView.animate(withDuration: 0.5) { circleView?.alpha = 1 }
-//    }
-//}
