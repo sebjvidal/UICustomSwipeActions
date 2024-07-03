@@ -29,9 +29,11 @@ class UICustomSwipeActionButton: UIView {
         }
     }
     
-    var image: UIImage? = nil {
-        didSet {
-            imageView.image = image?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
+    var image: UIImage? {
+        get {
+            return imageView.image
+        } set {
+            imageView.image = newValue
         }
     }
     
@@ -67,6 +69,7 @@ class UICustomSwipeActionButton: UIView {
     private func setupImageView() {
         imageView = UIImageView()
         imageView.tintColor = .white
+        imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(imageView)
