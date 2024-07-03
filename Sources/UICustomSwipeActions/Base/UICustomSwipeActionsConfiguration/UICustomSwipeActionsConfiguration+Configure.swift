@@ -12,7 +12,7 @@ extension UICustomSwipeActionsConfiguration {
     
     public static func configure() {
         guard isConfigured == false else { return }
-        UIView.swizzleUISwipeActionStandardButtonLayoutSubviews()
+        UIView.swizzleUISwipeActionPullViewLayoutSubviews()
         isConfigured = true
     }
 }
