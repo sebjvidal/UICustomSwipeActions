@@ -28,6 +28,8 @@ extension UIView {
         
         guard let actions, actions.first?.preferredButtonStyle == .circular else { return }
         
+        backgroundColor = .clear
+        
         for case let (index, button as UIButton) in subviews.enumerated() {
             guard actions.indices.contains(index) else { continue }
             
