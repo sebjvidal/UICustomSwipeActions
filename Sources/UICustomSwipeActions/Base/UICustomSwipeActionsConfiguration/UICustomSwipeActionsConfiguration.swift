@@ -27,6 +27,8 @@ public class UICustomSwipeActionsConfiguration: UISwipeActionsConfiguration {
     public convenience init(actions: [UIContextualAction]) {
         self.init()
         
+        UIView.swizzleUISwipeActionPullViewLayoutSubviewsIfNeeded()
+        
         if UICustomSwipeActionsConfiguration.isConfigured {
             _actions = actions.map { action in
                 UICustomContextualAction(contextualAction: action, configuration: self)
@@ -34,6 +36,11 @@ public class UICustomSwipeActionsConfiguration: UISwipeActionsConfiguration {
         } else {
             NSException.customSwipeActionsConfigurationException.raise()
         }
+    }
+    
+    // MARK: - init()
+    public override init() {
+        fatalError("init() is not supported")
     }
     
     // MARK: - Private Methods

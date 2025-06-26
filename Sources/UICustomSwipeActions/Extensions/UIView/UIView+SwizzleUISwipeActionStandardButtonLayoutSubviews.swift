@@ -8,7 +8,11 @@
 import UIKit
 
 extension UIView {
-    static func swizzleUISwipeActionPullViewLayoutSubviews() {
+    static var needsSwizzleUISwipeActionPullViewLayoutSubviews: Bool = true
+    
+    static func swizzleUISwipeActionPullViewLayoutSubviewsIfNeeded() {
+        guard needsSwizzleUISwipeActionPullViewLayoutSubviews else { return }
+        
         guard let UISwipeActionPullView = NSClassFromBase64String("VUlTd2lwZUFjdGlvblB1bGxWaWV3") as? UIView.Type else { return }
         
         let originalSelector = #selector(UISwipeActionPullView.layoutSubviews)
@@ -18,6 +22,8 @@ extension UIView {
         guard let swizzledMethod = class_getInstanceMethod(UISwipeActionPullView.self, swizzledSelector) else { return }
         
         method_exchangeImplementations(originalMethod, swizzledMethod)
+        
+        needsSwizzleUISwipeActionPullViewLayoutSubviews = false
     }
     
     @objc dynamic private func swizzledUISwipeActionPullViewLayoutSubviews() {

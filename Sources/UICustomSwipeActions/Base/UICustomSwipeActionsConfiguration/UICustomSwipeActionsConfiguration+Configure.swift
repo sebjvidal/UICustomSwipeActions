@@ -8,11 +8,12 @@
 import UIKit
 
 extension UICustomSwipeActionsConfiguration {
-    static var isConfigured: Bool = false
+    static var isConfigured: Bool {
+        return UIView.needsSwizzleUISwipeActionPullViewLayoutSubviews == false
+    }
     
+    @available(*, deprecated, message: "Calling this method is no longer needed.")
     public static func configure() {
-        guard isConfigured == false else { return }
-        UIView.swizzleUISwipeActionPullViewLayoutSubviews()
-        isConfigured = true
+        UIView.swizzleUISwipeActionPullViewLayoutSubviewsIfNeeded()
     }
 }
