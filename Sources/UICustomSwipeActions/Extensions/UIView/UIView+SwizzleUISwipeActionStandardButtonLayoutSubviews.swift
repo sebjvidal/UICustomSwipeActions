@@ -48,7 +48,7 @@ extension UIView {
                 
                 let offset = frame.width == superview?.frame.width ? action.preferredButtonSpacing : 0
                 let x = (cellEdge == .left ? action.preferredButtonSpacing : 0) + (cellEdge == .left ? -offset : offset)
-                let y = (frame.height / 2) - (buttonWidth / 2)
+                let y = (frame.height / 2) - (buttonWidth / 2) + (action.preferredButtonSpacing / 2)
                 
                 return CGRect(x: x, y: y, width: width, height: height)
             }
