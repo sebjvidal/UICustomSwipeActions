@@ -10,25 +10,9 @@ While this package has shipped in production apps, you should use it at your own
 
 # Usage
 
-1. Import `UICustomSwipeActions` in your application delegate file. Call `UICustomSwipeActionsConfiguration.configure()` in `application(_:didFinishLaunchingWithOptions:)`.
-
-```swift
-import UIKit
-import UICustomSwipeActions
-
-@main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UICustomSwipeActionsConfiguration.configure()
-        return true
-    }
-}
-```
-
-2. Replace your existing `UISwipeActionsConfiguration` with a `UICustomSwipeActionsConfiguration`.
+Replace your existing `UISwipeActionsConfiguration` with a `UICustomSwipeActionsConfiguration`.
   
-   You can customise such properties as the `preferredButtonWidth`, `preferredButtonSpacing` and `preferredButtonStyle`, along with the standard `UISwipeActionsConfiguration` properties.
+You can customise such properties as the `preferredButtonWidth`, `preferredButtonSpacing` and `preferredButtonStyle`, along with the standard `UISwipeActionsConfiguration` properties.
    
 ```swift
 class ViewController: UIViewController, UITableViewDelegate {
@@ -49,4 +33,4 @@ class ViewController: UIViewController, UITableViewDelegate {
 }
 ```
 
-3. That's it! You're good to go. All you have to do is build and run!
+That's it! You're good to go. All you have to do is build and run!
